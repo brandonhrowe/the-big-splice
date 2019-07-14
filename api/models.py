@@ -12,10 +12,17 @@ class FilmManager(models.Manager):
 
 class Film(models.Model):
   title = models.CharField(max_length=255)
+  identifier = models.CharField(max_length=255)
   timecodes = ArrayField(models.CharField(max_length=10))
-  runtime = models.CharField(max_length=10)
+  url = models.URLField()
+  file_name = models.CharField(max_length=100)
   tags = ArrayField(models.CharField(max_length=255, blank=True))
-  collection = models.CharField(max_length=100)
+  collection = ArrayField(models.CharField(max_length=100))
+  description = models.TextField(blank=True)
+  width = models.IntegerField(default=0)
+  height = models.IntegerField(default=0)
+  frame_rate = models.CharField(max_length=10)
+  duration = models.CharField(max_length=10)
 
   objects = models.Manager()
   random_film = FilmManager()
