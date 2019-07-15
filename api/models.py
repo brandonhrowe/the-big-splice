@@ -8,7 +8,7 @@ class FilmManager(models.Manager):
   def get_random_film(self):
     count = self.aggregate(count=Count('id'))['count']
     random_index = randint(0, count - 1)
-    return self.all()[random_index]
+    return self.all().values()[random_index]
 
 class Film(models.Model):
   title = models.CharField(max_length=255)
