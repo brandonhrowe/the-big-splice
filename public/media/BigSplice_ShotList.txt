@@ -1,3 +1,4 @@
+file BigSplice_Logo_640x480_2997.mp4
 file ./_temp/filmOne_Clip.mp4
 file ./_temp/filmTwo_Clip.mp4
 file ./_temp/filmThree_Clip.mp4

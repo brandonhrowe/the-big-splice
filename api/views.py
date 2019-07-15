@@ -73,7 +73,7 @@ class GenerateRandomClipView(APIView):
         ff_filmOne = ffmpy.FFmpeg(
             inputs={filmOne['url']:
                     f'-ss {filmOne["timecodes"][filmOne_random_idx]} -to {filmOne_end_tc}'},
-            outputs={"./public/media/_temp/filmOne_Clip.mp4": "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 5M -maxrate 10M -bufsize 1M"}
+            outputs={"./public/media/_temp/filmOne_Clip.mp4": "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 5M -maxrate 10M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
         )
         ff_filmOne.cmd
         ff_filmOne.run()
@@ -81,7 +81,7 @@ class GenerateRandomClipView(APIView):
         ff_filmTwo = ffmpy.FFmpeg(
             inputs={filmTwo['url']:
                     f'-ss {filmTwo["timecodes"][filmTwo_random_idx]} -to {filmTwo_end_tc}'},
-            outputs={"./public/media/_temp/filmTwo_Clip.mp4": "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 5M -maxrate 10M -bufsize 1M"}
+            outputs={"./public/media/_temp/filmTwo_Clip.mp4": "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 5M -maxrate 10M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
         )
         ff_filmTwo.cmd
         ff_filmTwo.run()
@@ -89,7 +89,7 @@ class GenerateRandomClipView(APIView):
         ff_filmThree = ffmpy.FFmpeg(
             inputs={filmThree['url']:
                     f'-ss {filmThree["timecodes"][filmThree_random_idx]} -to {filmThree_end_tc}'},
-            outputs={"./public/media/_temp/filmThree_Clip.mp4": "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 5M -maxrate 10M -bufsize 1M"}
+            outputs={"./public/media/_temp/filmThree_Clip.mp4": "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 5M -maxrate 10M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
         )
         ff_filmThree.cmd
         ff_filmThree.run()
