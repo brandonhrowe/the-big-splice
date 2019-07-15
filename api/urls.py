@@ -1,7 +1,7 @@
 from django.urls import path
-from api import views
+from api.views import AllFilmsView, RandomFilmView
 
 urlpatterns = [
-  path('all/', views.all_films, name="all_films"),
-  path('random/', views.random, name="random")
+  path('all/', AllFilmsView.as_view()),
+  path('random/', RandomFilmView.as_view())
 ]
