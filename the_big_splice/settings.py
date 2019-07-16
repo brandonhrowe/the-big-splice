@@ -15,7 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTEND_DIR = os.path.join(BASE_DIR, 'the_big_splice_frontend')
-STATIC_DIR = os.path.join(FRONTEND_DIR, 'build', 'static')
+STATIC_DIR = os.path.join(BASE_DIR, 'the_big_splice_frontend', 'build', 'static')
 
 
 # Quick-start development settings - unsuitable for production
@@ -62,7 +62,7 @@ ROOT_URLCONF = 'the_big_splice.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [FRONTEND_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,6 +130,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIR = (STATIC_DIR,)
+STATICFILES_DIRS = (STATIC_DIR,)
 
 CORS_ORIGIN_ALLOW_ALL = True
