@@ -13,6 +13,7 @@ export default class App extends Component {
       isPlaying: false
     };
     this.loadClips = this.loadClips.bind(this);
+    this.clearFiles = this.clearFiles.bind(this);
   }
 
   async loadClips() {
@@ -21,12 +22,32 @@ export default class App extends Component {
         isLoading: true
       });
       const { data } = await axios.post("/api/clips/", {});
-      console.log("data", data)
+      console.log("data", data);
       this.setState({
         clips: data.files,
         isLoading: false
       });
       console.log(this.state);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async componentWillUnmount() {
+    try {
+      const { clips, main } = this.state;
+      const { data } = await axios.post("/api/remove/", { clips, main });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async clearFiles() {
+    try {
+      const { clips, main } = this.state;
+      const { data } = await axios.post("/api/remove/", { clips, main });
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +60,10 @@ export default class App extends Component {
         {isLoading ? (
           <Loading />
         ) : (
-          <button onClick={this.loadClips}>Click for Clips</button>
+          <div>
+            <button onClick={this.loadClips}>Click for Clips</button>
+            <button onClick={this.clearFiles}>Clear Clips</button>
+          </div>
         )}
       </div>
     );
