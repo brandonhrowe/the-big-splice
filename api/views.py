@@ -44,7 +44,7 @@ class GenerateRandomClipView(APIView):
         filmThree = Film.random_film.get_random_film()
 
         filmOne_totalShots = len(filmOne['timecodes'])
-        filmOne_random_idx = randint(0, round(filmOne_totalShots / 3))
+        filmOne_random_idx = randint(0, filmOne_totalShots)
         filmOne_end_tc = round(
             float(filmOne['timecodes'][filmOne_random_idx + randint(1, 3)]) - (2 / 29.97), 2)
         if float(filmOne_end_tc) - float(filmOne['timecodes'][filmOne_random_idx]) > 60:
@@ -55,7 +55,7 @@ class GenerateRandomClipView(APIView):
                 filmOne['timecodes'][filmOne_random_idx]) + 30
 
         filmTwo_totalShots = len(filmTwo['timecodes'])
-        filmTwo_random_idx = randint(0, round(filmTwo_totalShots / 3))
+        filmTwo_random_idx = randint(0, filmTwo_totalShots)
         filmTwo_end_tc = round(
             float(filmTwo['timecodes'][filmTwo_random_idx + randint(1, 3)]) - (2 / 29.97), 2)
         if float(filmTwo_end_tc) - float(filmTwo['timecodes'][filmTwo_random_idx]) > 60:
@@ -66,7 +66,7 @@ class GenerateRandomClipView(APIView):
                 filmTwo['timecodes'][filmTwo_random_idx]) + 30
 
         filmThree_totalShots = len(filmThree['timecodes'])
-        filmThree_random_idx = randint(0, round(filmThree_totalShots / 3))
+        filmThree_random_idx = randint(0, filmThree_totalShots)
         filmThree_end_tc = round(
             float(filmThree['timecodes'][filmThree_random_idx + randint(1, 3)]) - (2 / 29.97), 2)
         if float(filmThree_end_tc) - float(filmThree['timecodes'][filmThree_random_idx]) > 60:
@@ -134,18 +134,33 @@ class GenerateFinalFilmView(APIView):
         ff_merge.cmd
         ff_merge.run()
 
-        def clear_files(request_files):
-            print("start of clear_files call")
-            for file in request_files:
+        # def clear_files(request_files):
+        #     print("start of clear_files call")
+        #     for file in request_files:
+        #         print(f"deleting: {file}")
+        #         os.remove(f"./public/media/_temp/{file}")
+        #     print("request_files have been deleted")
+
+        # timer = Timer(5.0, clear_files, [request_files])
+
+        # timer.start()
+
+        return Response(status=status.HTTP_201_CREATED, data={"file": f"{final_file_name}"})
+
+class RemoveFilesView(APIView):
+    def delete(self, request, format=None):
+        clips_to_delete = json.loads(request.body)['clips']
+        main_to_delete = json.loads(request.body)['main']
+        if len(clips_to_delete) > 0:
+            for file in clips_to_delete:
                 print(f"deleting: {file}")
                 os.remove(f"./public/media/_temp/{file}")
-            print("request_files have been deleted")
+        print(f"deleting: {main_to_delete}.mp4")
+        os.remove(f"./public/media/_temp/{main_to_delete}.mp4")
+        os.remove(f"./public/media/{main_to_delete}_ShotList.txt")
+        print("files have been deleted")
+        return Response(status=status.HTTP_202_ACCEPTED)
 
-        timer = Timer(5.0, clear_files, [request_files])
-
-        timer.start()
-
-        return Response(status=status.HTTP_201_CREATED, data={"file": f"{final_file_name}.mp4"})
 
 
 # class AllFilmsView(generics.ListAPIView):
