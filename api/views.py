@@ -87,7 +87,7 @@ class GenerateRandomClipView(APIView):
         ff_filmOne.cmd
         ff_filmOne.run()
 
-        filmTwo_fileName = f"Clip2_{filmTwo['identifier']}_{''.join(str(filmTwo['timecodes'][filmTwo_random_idx]).split('.'))}_{''.join(str(filmTwo_end_tc).split(':'))}_{randint(0, 1000000)}"
+        filmTwo_fileName = f"Clip2_{filmTwo['identifier']}_{''.join(str(filmTwo['timecodes'][filmTwo_random_idx]).split('.'))}_{''.join(str(filmTwo_end_tc).split('.'))}_{randint(0, 1000000)}"
 
         ff_filmTwo = ffmpy.FFmpeg(
             inputs={filmTwo['url']:
@@ -98,7 +98,7 @@ class GenerateRandomClipView(APIView):
         ff_filmTwo.cmd
         ff_filmTwo.run()
 
-        filmThree_fileName = f"Clip3_{filmThree['identifier']}_{''.join(str(filmThree['timecodes'][filmThree_random_idx]).split('.'))}_{''.join(str(filmThree_end_tc).split(':'))}_{randint(0, 1000000)}"
+        filmThree_fileName = f"Clip3_{filmThree['identifier']}_{''.join(str(filmThree['timecodes'][filmThree_random_idx]).split('.'))}_{''.join(str(filmThree_end_tc).split('.'))}_{randint(0, 1000000)}"
 
         ff_filmThree = ffmpy.FFmpeg(
             inputs={filmThree['url']:
@@ -109,8 +109,31 @@ class GenerateRandomClipView(APIView):
         ff_filmThree.cmd
         ff_filmThree.run()
 
+        ff_thumbnailOne = ffmpy.FFmpeg(
+            inputs={f"./public/media/_temp/{filmOne_fileName}.mp4": f"-ss 1"},
+            outputs={f"./public/media/_temp/{filmOne_fileName}_Thumbnail.jpg": f"-vframes 1"}
+        )
+        ff_thumbnailOne.cmd
+        ff_thumbnailOne.run()
+
+        ff_thumbnailTwo = ffmpy.FFmpeg(
+            inputs={f"./public/media/_temp/{filmTwo_fileName}.mp4": f"-ss 1"},
+            outputs={f"./public/media/_temp/{filmTwo_fileName}_Thumbnail.jpg": f"-vframes 1"}
+        )
+        ff_thumbnailTwo.cmd
+        ff_thumbnailTwo.run()
+
+        ff_thumbnailThree = ffmpy.FFmpeg(
+            inputs={f"./public/media/_temp/{filmThree_fileName}.mp4": f"-ss 1"},
+            outputs={f"./public/media/_temp/{filmThree_fileName}_Thumbnail.jpg": f"-vframes 1"}
+        )
+        ff_thumbnailThree.cmd
+        ff_thumbnailThree.run()
+
         # files = ["filmOne_Clip.mp4", "filmTwo_Clip.mp4", "filmThree_Clip.mp4"]
-        return Response(status=status.HTTP_201_CREATED, data={"files": [f"{filmOne_fileName}.mp4", f"{filmTwo_fileName}.mp4", f"{filmThree_fileName}.mp4"]})
+
+
+        return Response(status=status.HTTP_201_CREATED, data={"files": [f"{filmOne_fileName}", f"{filmTwo_fileName}", f"{filmThree_fileName}"]})
 
         # Below is for route to make final film
 
@@ -123,7 +146,7 @@ class GenerateFinalFilmView(APIView):
         text_file = open(f'./public/media/{final_file_name}_ShotList.txt', 'w+')
         text_file.write("file BigSplice_Logo_640x480_2997.mp4\n")
         for file in request_files:
-            text_file.write(f"file ./_temp/{file}\n")
+            text_file.write(f"file ./_temp/{file}.mp4\n")
         text_file.close()
         ff_merge = ffmpy.FFmpeg(
             inputs={
@@ -155,7 +178,8 @@ class RemoveFilesView(APIView):
         if len(clips_to_delete) > 0:
             for file in clips_to_delete:
                 print(f"deleting: {file}")
-                os.remove(f"./public/media/_temp/{file}")
+                os.remove(f"./public/media/_temp/{file}.mp4")
+                os.remove(f"./public/media/_temp/{file}_Thumbnail.jpg")
         if len(main_to_delete) > 0:
             print(f"deleting: {main_to_delete}.mp4")
             os.remove(f"./public/media/_temp/{main_to_delete}.mp4")

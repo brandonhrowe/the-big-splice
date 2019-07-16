@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Loading from "./components/Loading";
+import Thumbnails from "./components/Thumbnails"
 import "./App.css";
 
 export default class App extends Component {
@@ -14,6 +15,7 @@ export default class App extends Component {
     };
     this.loadClips = this.loadClips.bind(this);
     this.clearFiles = this.clearFiles.bind(this);
+    this.createMainFile = this.createMainFile.bind(this);
   }
 
   async loadClips() {
@@ -22,9 +24,25 @@ export default class App extends Component {
         isLoading: true
       });
       const { data } = await axios.post("/api/clips/", {});
-      console.log("data", data);
       this.setState({
         clips: data.files,
+        isLoading: false
+      });
+      console.log(this.state);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async createMainFile() {
+    try {
+      this.setState({
+        isLoading: true
+      });
+      const { clips } = this.state;
+      const { data } = await axios.post("/api/final/", { files: clips });
+      this.setState({
+        main: data.file,
         isLoading: false
       });
       console.log(this.state);
@@ -54,7 +72,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, clips } = this.state;
     return (
       <div className="App-header">
         {isLoading ? (
@@ -63,6 +81,12 @@ export default class App extends Component {
           <div>
             <button onClick={this.loadClips}>Click for Clips</button>
             <button onClick={this.clearFiles}>Clear Clips</button>
+            {clips.length && (
+              <div>
+              <button onClick={this.createMainFile}>Create Your Movie</button>
+              <Thumbnails clips={clips}/>
+              </div>
+            )}
           </div>
         )}
       </div>
