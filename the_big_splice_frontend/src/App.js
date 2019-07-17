@@ -24,7 +24,7 @@ export default class App extends Component {
   async loadClips() {
     try {
       this.setState({
-        isLoading: true
+        isLoading: true,
       });
       const { data } = await axios.post("/api/clips/", {});
       this.setState({
@@ -68,7 +68,12 @@ export default class App extends Component {
   async clearAllFiles() {
     try {
       const { clips, main } = this.state;
-      const { data } = await axios.post("/api/remove/", { clips, main });
+      const { data } = await axios.post("/api/all/remove/", { clips, main });
+      this.setState({
+        clips: [],
+        main: '',
+        isPlaying: false
+      })
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -93,6 +98,9 @@ export default class App extends Component {
     try {
       const { clips } = this.state;
       const { data } = await axios.post("/api/clips/remove/", { clips });
+      this.setState({
+        clips: []
+      })
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -102,7 +110,7 @@ export default class App extends Component {
   render() {
     const { clips, main, isLoading, isPlaying } = this.state;
     return (
-      <div className="App-header">
+      <div className={`App-header ${isPlaying && "playing"}`}>
         {isLoading ? (
           <Loading />
         ) : isPlaying && main ? (
