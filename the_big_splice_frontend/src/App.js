@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import Loading from "./components/Loading";
 import Thumbnails from "./components/Thumbnails";
-import Player from "./components/Player"
+import Player from "./components/Player";
 import "./App.css";
+import arrayMove from "array-move";
 
 export default class App extends Component {
   constructor(props) {
@@ -12,19 +13,20 @@ export default class App extends Component {
       clips: [],
       main: "",
       isLoading: false,
-      isPlaying: false,
+      isPlaying: false
     };
     this.loadClips = this.loadClips.bind(this);
     this.clearAllFiles = this.clearAllFiles.bind(this);
     this.createMainFile = this.createMainFile.bind(this);
-    this.clearMainFiles = this.clearMainFiles.bind(this)
-    this.clearClipFiles = this.clearClipFiles.bind(this)
+    this.clearMainFiles = this.clearMainFiles.bind(this);
+    this.clearClipFiles = this.clearClipFiles.bind(this);
+    this.onSortEnd = this.onSortEnd.bind(this);
   }
 
   async loadClips() {
     try {
       this.setState({
-        isLoading: true,
+        isLoading: true
       });
       const { data } = await axios.post("/api/clips/", {});
       this.setState({
@@ -71,9 +73,9 @@ export default class App extends Component {
       const { data } = await axios.post("/api/all/remove/", { clips, main });
       this.setState({
         clips: [],
-        main: '',
+        main: "",
         isPlaying: false
-      })
+      });
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -85,9 +87,9 @@ export default class App extends Component {
       const { main } = this.state;
       const { data } = await axios.post("/api/final/remove/", { main });
       this.setState({
-        main: '',
+        main: "",
         isPlaying: false
-      })
+      });
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -100,11 +102,17 @@ export default class App extends Component {
       const { data } = await axios.post("/api/clips/remove/", { clips });
       this.setState({
         clips: []
-      })
+      });
       console.log(data);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  onSortEnd({ oldIndex, newIndex }) {
+    this.setState(({ clips }) => ({
+      clips: arrayMove(clips, oldIndex, newIndex)
+    }));
   }
 
   render() {
@@ -114,9 +122,8 @@ export default class App extends Component {
         {isLoading ? (
           <Loading />
         ) : isPlaying && main ? (
-          <Player main={main} clearMainFiles={this.clearMainFiles}/>
-        ) :
-        (
+          <Player main={main} clearMainFiles={this.clearMainFiles} />
+        ) : (
           <div>
             <button onClick={this.loadClips}>Click for Clips</button>
             <button onClick={this.clearClipFiles}>Clear Clips</button>
@@ -124,7 +131,7 @@ export default class App extends Component {
             {clips.length ? (
               <div>
                 <button onClick={this.createMainFile}>Create Your Movie</button>
-                <Thumbnails clips={clips} />
+                <Thumbnails clips={clips} onSortEnd={this.onSortEnd} />
               </div>
             ) : null}
           </div>
