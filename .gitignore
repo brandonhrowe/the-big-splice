@@ -11,9 +11,8 @@ downloads/
 local_settings.py
 .env
 db.sqlite3
-public/media/_temp/*
-!public/media/_temp/.gitkeep
-!public/media/_temp/BigSplice_ShotList.txt
+media/_temp/*
+!media/_temp/.gitkeep
 node_modules
 public/bundle.js
 public/bundle.js.map
