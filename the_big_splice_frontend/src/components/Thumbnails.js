@@ -6,7 +6,7 @@ const Thumbnails = props => {
     <div>
       {clips.map((clip, index) => (
         <div key={index}>
-          <img src={`/public/media/_temp/${clip}_Thumbnail.jpg`} alt={`thumbnail_${index}`} />
+          <img src={`/static/${clip}_Thumbnail.jpg`} alt={`thumbnail_${index}`} />
         </div>
       ))}
     </div>

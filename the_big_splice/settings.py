@@ -16,6 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTEND_DIR = os.path.join(BASE_DIR, 'the_big_splice_frontend')
 STATIC_DIR = os.path.join(BASE_DIR, 'the_big_splice_frontend', 'build', 'static')
+MEDIA_DIR = os.path.join(BASE_DIR, 'media', '_temp')
 
 
 # Quick-start development settings - unsuitable for production
@@ -130,6 +131,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (STATIC_DIR,)
+MEDIA_URL = '/media/'
+STATICFILES_DIRS = [STATIC_DIR, MEDIA_DIR]
+# MEDIAFILES_DIRS = [MEDIA_DIR,]
 
 CORS_ORIGIN_ALLOW_ALL = True
