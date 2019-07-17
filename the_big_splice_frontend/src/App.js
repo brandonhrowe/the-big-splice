@@ -3,6 +3,7 @@ import axios from "axios";
 import Loading from "./components/Loading";
 import Thumbnails from "./components/Thumbnails";
 import Player from "./components/Player";
+import About from "./components/About"
 import "./App.css";
 import arrayMove from "array-move";
 
@@ -46,11 +47,13 @@ export default class App extends Component {
       });
       const { clips } = this.state;
       const { data } = await axios.post("/api/final/", { files: clips });
-      this.setState({
-        main: data.file,
-        isLoading: false,
-        isPlaying: true
-      });
+      setTimeout(() => {
+        this.setState({
+          main: data.file,
+          isLoading: false,
+          isPlaying: true
+        });
+      }, 2000)
       console.log(this.state);
     } catch (error) {
       console.log(error);
@@ -119,6 +122,7 @@ export default class App extends Component {
     const { clips, main, isLoading, isPlaying } = this.state;
     return (
       <div className={`App-header ${isPlaying && "playing"}`}>
+        {!isPlaying && !isLoading ? <h1 className="title">THE BIG SPLICE</h1> : null}
         {isLoading ? (
           <Loading />
         ) : isPlaying && main ? (
@@ -133,7 +137,7 @@ export default class App extends Component {
                 <button onClick={this.createMainFile}>Create Your Movie</button>
                 <Thumbnails clips={clips} onSortEnd={this.onSortEnd} />
               </div>
-            ) : null}
+            ) : <About />}
           </div>
         )}
       </div>
