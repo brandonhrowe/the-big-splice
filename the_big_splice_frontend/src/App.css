@@ -34,7 +34,6 @@ body {
 
 .thumbnails {
   display: flex;
-  justify-content: space-evenly;
 }
 
 
