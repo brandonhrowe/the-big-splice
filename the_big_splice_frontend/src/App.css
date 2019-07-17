@@ -36,6 +36,20 @@ body {
   display: flex;
 }
 
+.thumbnail-film-strip.inner {
+  border-top: dashed 1em #010101;
+  border-bottom: dashed 1em #010101;
+  display: flex;
+}
+
+.thumbnail-film-strip.outer {
+  border: solid 1em #010101;
+}
+
+.thumbnail-wraper {
+  display: flex;
+}
+
 
 @keyframes App-logo-spin {
   from {
