@@ -13,7 +13,7 @@ from api.models import Film
 
 
 
-list_of_meta_keys = ['collection', 'description', 'identifier', 'subject', 'title']
+list_of_meta_keys = ['identifier', 'title']
 list_of_probe_keys = ['duration', 'width', 'height', 'avg_frame_rate']
 
 
@@ -21,8 +21,11 @@ def populate():
   for i in search_items('collection:Film_Noir', list_of_meta_keys):
     if "Weirdness Bad Movie" in i['title']:
         continue
-    collection, description, identifier, tags, title = [
+    identifier, title = [
         i[k] for k in list_of_meta_keys]
+    collection = i.get('collection', ['Film_Noir'])
+    description = i.get('description', 'no description')
+    tags = i.get('subject', [])
     if type(tags) is not list:
         tags = list(tags)
     item = get_item(identifier)

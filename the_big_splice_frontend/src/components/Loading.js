@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import logo from "../BigSplice_icon.svg";
-import clock from "../Clock_TheStranger.gif";
+import clock from "../Clock_TheStranger_256x192.gif";
 
 export default class Loading extends Component {
   constructor() {
