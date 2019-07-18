@@ -54,6 +54,27 @@ body {
   display: flex;
 }
 
+.gif-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20%;
+  opacity: 0;
+  transition: opacity 0.5s linear;
+  z-index: 4;
+}
+
+.git-container > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.gif-container.visible {
+  opacity: 1;
+}
 
 @keyframes App-logo-spin {
   from {

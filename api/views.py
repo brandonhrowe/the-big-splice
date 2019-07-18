@@ -147,6 +147,7 @@ class GenerateFinalFilmView(APIView):
         text_file.write("file ../BigSplice_Logo_640x480_2997.mp4\n")
         for file in request_files:
             text_file.write(f"file {file}.mp4\n")
+        text_file.write("file ../BigSplice_End_640x480_2997.mp4\n")
         text_file.close()
         ff_merge = ffmpy.FFmpeg(
             inputs={

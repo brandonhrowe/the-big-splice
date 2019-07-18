@@ -19,8 +19,12 @@ list_of_probe_keys = ['duration', 'width', 'height', 'avg_frame_rate']
 
 def populate():
   for i in search_items('collection:Film_Noir', list_of_meta_keys):
+    if "Weirdness Bad Movie" in i['title']:
+        continue
     collection, description, identifier, tags, title = [
         i[k] for k in list_of_meta_keys]
+    if type(tags) is not list:
+        tags = list(tags)
     item = get_item(identifier)
     file_name = next(filter(lambda x: ".mp4" in x['name'], item.files), None)[
         'name']
@@ -44,8 +48,12 @@ def populate():
         '-show_format', '-show_streams'])
     stdout, _ = probe.run(stdout=subprocess.PIPE)
     probe_data = json.loads(stdout.decode('utf-8'))['streams'][0]
-    duration, resolution_width, resolution_height, frame_rate = [
-        probe_data[j] for j in list_of_probe_keys]
+    duration = probe_data.get('duration', 0)
+    resolution_width = probe_data.get('width', 640)
+    resolution_height = probe_data.get('height', 480)
+    frame_rate = probe_data.get('avg_frame_rate', "30000/1001")
+    # duration, resolution_width, resolution_height, frame_rate = [
+    #     probe_data[j] for j in list_of_probe_keys]
     film = Film.objects.get_or_create(collection=collection, description=description, identifier=identifier, tags=tags, title=title,
                                       file_name=file_name, url=url, timecodes=timecodes, duration=duration, resolution_width=resolution_width, resolution_height=resolution_height, frame_rate=frame_rate)[0]
     print(film)
