@@ -32,7 +32,7 @@ body {
 
 .logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+  height: 45vmin;
   pointer-events: none;
 }
 
@@ -60,25 +60,23 @@ body {
   display: flex;
 }
 
-.gif-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20%;
-  opacity: 0;
-  transition: opacity 0.5s linear;
-  z-index: 4;
-}
-
-.git-container > div {
+.image-container {
+  position: relative;
   display: flex;
-  flex-direction: column;
+  height: 480px;
+  width: 640px;
+  margin: 0 auto;
   justify-content: center;
   align-items: center;
 }
 
-.gif-container.visible {
+.image-container img {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  position: absolute;
+}
+
+img.visible {
   opacity: 1;
 }
 
