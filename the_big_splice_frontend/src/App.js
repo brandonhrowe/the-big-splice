@@ -1,11 +1,14 @@
 import React, { Component } from "react";
+import { Prompt } from "react-router";
 import axios from "axios";
 import Loading from "./components/Loading";
 import Thumbnails from "./components/Thumbnails";
 import Player from "./components/Player";
-import About from "./components/About"
+import About from "./components/About";
 import "./App.css";
 import arrayMove from "array-move";
+import createBrowserHistory from "history/createBrowserHistory";
+const history = createBrowserHistory();
 
 export default class App extends Component {
   constructor(props) {
@@ -53,21 +56,22 @@ export default class App extends Component {
           isLoading: false,
           isPlaying: true
         });
-      }, 2000)
+      }, 2000);
       console.log(this.state);
     } catch (error) {
       console.log(error);
     }
   }
 
-  async componentWillUnmount() {
-    try {
+  componentDidMount() {
+    this.unblock = history.block(() => {
       const { clips, main } = this.state;
-      const { data } = await axios.post("/api/all/remove/", { clips, main });
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
+      axios.post("/api/all/remove/", { clips, main });
+    });
+  }
+
+  componentWillUnmount() {
+    this.unblock();
   }
 
   async clearAllFiles() {
@@ -122,7 +126,9 @@ export default class App extends Component {
     const { clips, main, isLoading, isPlaying } = this.state;
     return (
       <div className={`App-header ${isPlaying && "playing"}`}>
-        {!isPlaying && !isLoading ? <h1 className="title">THE BIG SPLICE</h1> : null}
+        {!isPlaying && !isLoading ? (
+          <h1 className="title">THE BIG SPLICE</h1>
+        ) : null}
         {isLoading ? (
           <Loading />
         ) : isPlaying && main ? (
@@ -137,7 +143,9 @@ export default class App extends Component {
                 <button onClick={this.createMainFile}>Create Your Movie</button>
                 <Thumbnails clips={clips} onSortEnd={this.onSortEnd} />
               </div>
-            ) : <About />}
+            ) : (
+              <About />
+            )}
           </div>
         )}
       </div>

@@ -40,14 +40,20 @@ body {
   display: flex;
 }
 
-.thumbnail-film-strip.inner {
+.thumbnail-film-strip.middle {
   border-top: dashed 1em #010101;
   border-bottom: dashed 1em #010101;
   display: flex;
 }
 
+.thumbnail-film-strip.inner {
+  border: solid 0.5em #010101;
+  border-right: 0;
+  border-left: 0;
+}
+
 .thumbnail-film-strip.outer {
-  border: solid 1em #010101;
+  border: solid 0.5em #010101;
 }
 
 .thumbnail-wraper {

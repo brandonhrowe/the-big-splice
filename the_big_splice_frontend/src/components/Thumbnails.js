@@ -15,12 +15,14 @@ const Thumbnails = props => {
   const { clips, onSortEnd } = props;
   return (
     <div className="thumbnail-film-strip outer">
-      <div className="thumbnail-film-strip inner">
-        <ThumbnailContainer onSortEnd={onSortEnd} axis="x">
-          {clips.map((clip, index) => (
-            <ThumbnailItem key={index} index={index} clip={clip} />
-          ))}
-        </ThumbnailContainer>
+      <div className="thumbnail-film-strip middle">
+        <div className="thumbnail-film-strip inner">
+          <ThumbnailContainer onSortEnd={onSortEnd} axis="x">
+            {clips.map((clip, index) => (
+              <ThumbnailItem key={index} index={index} clip={clip} />
+            ))}
+          </ThumbnailContainer>
+        </div>
       </div>
     </div>
   );

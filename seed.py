@@ -29,9 +29,23 @@ def populate():
     if type(tags) is not list:
         tags = list(tags)
     item = get_item(identifier)
-    file_name = next(filter(lambda x: ".mp4" in x['name'], item.files), None)[
-        'name']
+    file_name = next(filter(lambda x: ".mp4" in x['name'], item.files), None)['name']
     url = f"https://archive.org/download/{identifier}/{file_name}"
+
+    probe = ffmpy.FFprobe(inputs={url: None},
+                          global_options=[
+        '-v', 'quiet',
+        '-print_format', 'json',
+        '-show_format', '-show_streams'])
+    stdout, _ = probe.run(stdout=subprocess.PIPE)
+    probe_data = json.loads(stdout.decode('utf-8'))['streams'][0]
+    duration = probe_data.get('duration', 0)
+    resolution_width = probe_data.get('width', 640)
+    resolution_height = probe_data.get('height', 480)
+    frame_rate = probe_data.get('avg_frame_rate', "30000/1001")
+    if frame_rate == "0/0":
+        continue
+
     ff = ffmpy.FFmpeg(
         inputs={url: '-hide_banner'},
         outputs={
@@ -44,17 +58,6 @@ def populate():
         filter(lambda x: "Parsed_showinfo_1" in x and "pts_time" in x, shot_log))
     timecodes = list(map(lambda y: ((next(filter(lambda z: z.startswith(
         "pts_time"), y.split(" ")), None)).split(":"))[1], filtered_output))
-    probe = ffmpy.FFprobe(inputs={url: None},
-                          global_options=[
-        '-v', 'quiet',
-        '-print_format', 'json',
-        '-show_format', '-show_streams'])
-    stdout, _ = probe.run(stdout=subprocess.PIPE)
-    probe_data = json.loads(stdout.decode('utf-8'))['streams'][0]
-    duration = probe_data.get('duration', 0)
-    resolution_width = probe_data.get('width', 640)
-    resolution_height = probe_data.get('height', 480)
-    frame_rate = probe_data.get('avg_frame_rate', "30000/1001")
     # duration, resolution_width, resolution_height, frame_rate = [
     #     probe_data[j] for j in list_of_probe_keys]
     film = Film.objects.get_or_create(collection=collection, description=description, identifier=identifier, tags=tags, title=title,
