@@ -64,14 +64,12 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.unblock = history.block(() => {
+    window.addEventListener("beforeunload", (event) => {
+      event.preventDefault()
+      event.returnValue = 'Reloading this page means you will lose your movie!'
       const { clips, main } = this.state;
       axios.post("/api/all/remove/", { clips, main });
     });
-  }
-
-  componentWillUnmount() {
-    this.unblock();
   }
 
   async clearAllFiles() {
