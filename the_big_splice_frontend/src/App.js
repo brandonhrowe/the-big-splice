@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Prompt } from "react-router";
 import axios from "axios";
 import Loading from "./components/Loading";
 import Thumbnails from "./components/Thumbnails";
@@ -7,8 +6,6 @@ import Player from "./components/Player";
 import About from "./components/About";
 import "./App.css";
 import arrayMove from "array-move";
-import createBrowserHistory from "history/createBrowserHistory";
-const history = createBrowserHistory();
 
 export default class App extends Component {
   constructor(props) {

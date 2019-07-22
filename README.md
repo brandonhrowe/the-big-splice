@@ -11,3 +11,8 @@ The Big Splice requires the following installations for use, in addition to Djan
 $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
 $CONDA_PREFIX/etc/conda/deactivate.d/env_vars.sh
 
+To install Internet Archive command line tool:
+$ curl -LOs https://archive.org/download/ia-pex/ia
+$ chmod +x ia
+
+Command line: ia configure - will save to ~/.config/ia.ini

@@ -3,7 +3,7 @@ import { SortableContainer, SortableElement } from "react-sortable-hoc";
 
 const ThumbnailItem = SortableElement(({ clip }) => (
   <div className="thumbnail-wraper">
-    <img src={`/static/${clip}_Thumbnail.jpg`} alt={`thumbnail_${clip}`} />
+    <img src={`/media/${clip}_Thumbnail.jpg`} alt={`thumbnail_${clip}`} />
   </div>
 ));
 

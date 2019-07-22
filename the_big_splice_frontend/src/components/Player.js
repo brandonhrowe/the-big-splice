@@ -8,7 +8,7 @@ export default class Player extends Component {
     this.player = videojs(this.videoNode, {
       autoplay: false,
       controls: true,
-      sources: [{ src: `/static/${main}.mp4`, type: "video/mp4" }]
+      sources: [{ src: `/media/${main}.mp4`, type: "video/mp4" }]
     }, () => console.log("onPlayerReady", this));
   }
 
