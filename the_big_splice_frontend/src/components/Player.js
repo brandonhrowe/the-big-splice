@@ -9,7 +9,7 @@ export default class Player extends Component {
       autoplay: false,
       controls: true,
       sources: [{ src: `/media/${main}.mp4`, type: "video/mp4" }]
-    }, () => console.log("onPlayerReady", this));
+    });
   }
 
   componentWillUnmount(){
@@ -22,16 +22,11 @@ export default class Player extends Component {
     const { clearMainFiles } = this.props;
     return (
       <div>
-        {/* <video controls preload="auto">
-          <source src={`/static/${main}.mp4`} type="video/mp4"/>
-          <a href={`/static/${main}.mp4`}>Sorry, it looks like your browser can't play this file. Download the
-            link here</a>
-        </video> */}
         <div data-video-js>
           <video ref={node => this.videoNode = node} className="video-js"></video>
         </div>
-        <button onClick={clearMainFiles}>
-          Delete This File and Go Back to Clips
+        <button className="button" onClick={clearMainFiles}>
+          MAKE A NEW MOVIE
         </button>
       </div>
     );

@@ -4,6 +4,7 @@ import Loading from "./components/Loading";
 import Thumbnails from "./components/Thumbnails";
 import Player from "./components/Player";
 import About from "./components/About";
+import Modal from "./components/Modal";
 import "./App.css";
 import arrayMove from "array-move";
 
@@ -14,7 +15,8 @@ export default class App extends Component {
       clips: [],
       main: "",
       isLoading: false,
-      isPlaying: false
+      isPlaying: false,
+      displayModal: false
     };
     this.loadClips = this.loadClips.bind(this);
     this.clearAllFiles = this.clearAllFiles.bind(this);
@@ -22,6 +24,7 @@ export default class App extends Component {
     this.clearMainFiles = this.clearMainFiles.bind(this);
     this.clearClipFiles = this.clearClipFiles.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   async loadClips() {
@@ -29,12 +32,13 @@ export default class App extends Component {
       this.setState({
         isLoading: true
       });
+      const {clips, main} = this.state
+      await axios.post("/api/all/remove/", { clips, main });
       const { data } = await axios.post("/api/clips/", {});
       this.setState({
         clips: data.files,
         isLoading: false
       });
-      console.log(this.state);
     } catch (error) {
       console.log(error);
     }
@@ -54,16 +58,15 @@ export default class App extends Component {
           isPlaying: true
         });
       }, 2000);
-      console.log(this.state);
     } catch (error) {
       console.log(error);
     }
   }
 
   componentDidMount() {
-    window.addEventListener("beforeunload", (event) => {
-      event.preventDefault()
-      event.returnValue = 'Reloading this page means you will lose your movie!'
+    window.addEventListener("beforeunload", event => {
+      event.preventDefault();
+      event.returnValue = "Reloading this page means you will lose your movie!";
       const { clips, main } = this.state;
       axios.post("/api/all/remove/", { clips, main });
     });
@@ -72,13 +75,12 @@ export default class App extends Component {
   async clearAllFiles() {
     try {
       const { clips, main } = this.state;
-      const { data } = await axios.post("/api/all/remove/", { clips, main });
+      await axios.post("/api/all/remove/", { clips, main });
       this.setState({
         clips: [],
         main: "",
         isPlaying: false
       });
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -87,12 +89,11 @@ export default class App extends Component {
   async clearMainFiles() {
     try {
       const { main } = this.state;
-      const { data } = await axios.post("/api/final/remove/", { main });
+      await axios.post("/api/final/remove/", { main });
       this.setState({
         main: "",
         isPlaying: false
       });
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -101,11 +102,10 @@ export default class App extends Component {
   async clearClipFiles() {
     try {
       const { clips } = this.state;
-      const { data } = await axios.post("/api/clips/remove/", { clips });
+      await axios.post("/api/clips/remove/", { clips });
       this.setState({
         clips: []
       });
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -117,32 +117,38 @@ export default class App extends Component {
     }));
   }
 
+  toggleModal() {
+    this.setState(prevState => ({
+      displayModal: !prevState.displayModal
+    }));
+  }
+
   render() {
-    const { clips, main, isLoading, isPlaying } = this.state;
+    const { clips, main, isLoading, isPlaying, displayModal } = this.state;
     return (
       <div className={`App-header ${isPlaying && "playing"}`}>
         {!isPlaying && !isLoading ? (
-          <h1 className="title">THE BIG SPLICE</h1>
+          <h1 className="title" onClick={this.clearAllFiles}>THE BIG SPLICE</h1>
         ) : null}
         {isLoading ? (
           <Loading />
         ) : isPlaying && main ? (
           <Player main={main} clearMainFiles={this.clearMainFiles} />
         ) : (
-          <div>
-            <button onClick={this.loadClips}>Click for Clips</button>
+          <div className="about-button-container">
+            {/* <button onClick={this.loadClips}>Click for Clips</button>
             <button onClick={this.clearClipFiles}>Clear Clips</button>
-            <button onClick={this.clearAllFiles}>Clear All Files</button>
+            <button onClick={this.clearAllFiles}>Clear All Files</button> */}
             {clips.length ? (
               <div>
-                <button onClick={this.createMainFile}>Create Your Movie</button>
-                <Thumbnails clips={clips} onSortEnd={this.onSortEnd} />
+                <Thumbnails clips={clips} onSortEnd={this.onSortEnd} createMainFile={this.createMainFile} loadClips={this.loadClips} clearAllFiles={this.clearAllFiles}/>
               </div>
             ) : (
-              <About />
+              <About toggleModal={this.toggleModal} loadClips={this.loadClips}/>
             )}
           </div>
         )}
+        <Modal displayModal={displayModal} toggleModal={this.toggleModal} />
       </div>
     );
   }
