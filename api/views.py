@@ -82,7 +82,7 @@ class GenerateRandomClipView(APIView):
             inputs={filmOne['url']:
                     f'-ss {filmOne["timecodes"][filmOne_random_idx]} -to {filmOne_end_tc}'},
             outputs={f"./media/_temp/{filmOne_fileName}.mp4":
-                     "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 5M -maxrate 10M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
+                     "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 3M -maxrate 5M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
         )
         ff_filmOne.cmd
         ff_filmOne.run()
@@ -93,7 +93,7 @@ class GenerateRandomClipView(APIView):
             inputs={filmTwo['url']:
                     f'-ss {filmTwo["timecodes"][filmTwo_random_idx]} -to {filmTwo_end_tc}'},
             outputs={f"./media/_temp/{filmTwo_fileName}.mp4":
-                     "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 5M -maxrate 10M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
+                     "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 3M -maxrate 5M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
         )
         ff_filmTwo.cmd
         ff_filmTwo.run()
@@ -104,7 +104,7 @@ class GenerateRandomClipView(APIView):
             inputs={filmThree['url']:
                     f'-ss {filmThree["timecodes"][filmThree_random_idx]} -to {filmThree_end_tc}'},
             outputs={f"./media/_temp/{filmThree_fileName}.mp4":
-                     "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 5M -maxrate 10M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
+                     "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 3M -maxrate 5M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
         )
         ff_filmThree.cmd
         ff_filmThree.run()
@@ -210,7 +210,6 @@ class RemoveClipsAndMainView(APIView):
             os.remove(f"./media/_temp/{main_to_delete}_ShotList.txt")
         print("files have been deleted")
         return Response(status=status.HTTP_202_ACCEPTED, data={"clips_deleted": clips_to_delete, "main_deleted": main_to_delete})
-
 
 
 # class AllFilmsView(generics.ListAPIView):

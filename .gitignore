@@ -20,3 +20,5 @@ secrets.js
 secrets.py
 .bash_profile
 .bashrc
+static/*
+nginx.conf

@@ -6,6 +6,7 @@ import Player from "./components/Player";
 import About from "./components/About";
 import Modal from "./components/Modal";
 import "./App.css";
+import logo from "./BigSplice_icon.svg";
 import arrayMove from "array-move";
 
 export default class App extends Component {
@@ -32,7 +33,7 @@ export default class App extends Component {
       this.setState({
         isLoading: true
       });
-      const {clips, main} = this.state
+      const { clips, main } = this.state;
       await axios.post("/api/all/remove/", { clips, main });
       const { data } = await axios.post("/api/clips/", {});
       this.setState({
@@ -128,7 +129,21 @@ export default class App extends Component {
     return (
       <div className={`App-header ${isPlaying && "playing"}`}>
         {!isPlaying && !isLoading ? (
-          <h1 className="title" onClick={this.clearAllFiles}>THE BIG SPLICE</h1>
+          <div className="title-container">
+            <img
+              src={logo}
+              className="logo small"
+              alt="logo"
+            />
+            <h1 className="title" onClick={this.clearAllFiles}>
+              THE BIG SPLICE
+            </h1>
+            <img
+              src={logo}
+              className="logo small"
+              alt="logo"
+            />
+          </div>
         ) : null}
         {isLoading ? (
           <Loading />
@@ -141,14 +156,24 @@ export default class App extends Component {
             <button onClick={this.clearAllFiles}>Clear All Files</button> */}
             {clips.length ? (
               <div>
-                <Thumbnails clips={clips} onSortEnd={this.onSortEnd} createMainFile={this.createMainFile} loadClips={this.loadClips} clearAllFiles={this.clearAllFiles}/>
+                <Thumbnails
+                  clips={clips}
+                  onSortEnd={this.onSortEnd}
+                  createMainFile={this.createMainFile}
+                  loadClips={this.loadClips}
+                  clearAllFiles={this.clearAllFiles}
+                />
               </div>
             ) : (
-              <About toggleModal={this.toggleModal} loadClips={this.loadClips}/>
+              <About
+                toggleModal={this.toggleModal}
+                loadClips={this.loadClips}
+              />
             )}
           </div>
         )}
         <Modal displayModal={displayModal} toggleModal={this.toggleModal} />
+        <div className={`modal-background ${displayModal && "visible"}`}></div>
       </div>
     );
   }

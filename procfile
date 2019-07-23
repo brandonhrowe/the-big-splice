@@ -1,0 +1,1 @@
+web: cd the_big_splice_frontend && npm run build && cd .. && uwsgi --socket :8001 --module the_big_splice.wsgi && sudo nginx

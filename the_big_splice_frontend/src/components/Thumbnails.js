@@ -14,7 +14,7 @@ const ThumbnailContainer = SortableContainer(({ children }) => {
 const Thumbnails = props => {
   const { clips, onSortEnd, createMainFile, loadClips, clearAllFiles } = props;
   return (
-    <div>
+    <div className="thumbnail-component">
       <h3>Drag and drop the below images to edit together your movie</h3>
       <div className="thumbnail-film-strip outer">
         <div className="thumbnail-film-strip middle">

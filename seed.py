@@ -5,13 +5,13 @@ import django
 django.setup()
 
 import asyncio
-from internetarchive import search_items, get_item
+from internetarchive import search_items, get_item, configure
 import json
 import subprocess
 import ffmpy
 from api.models import Film
 
-
+configure(os.environ['IA_USER'], os.environ['IA_PASSWORD'])
 
 list_of_meta_keys = ['identifier', 'title']
 list_of_probe_keys = ['duration', 'width', 'height', 'avg_frame_rate']

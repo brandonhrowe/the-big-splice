@@ -5,12 +5,9 @@ const About = props => {
   return (
     <div className="about-container">
       <p>
-        THE BIG SPLICE is a site to concoct your own mini-film. <br />
-        Using clips from old film noirs, it is up to YOU to decide on the order
-        you want to compile those clips. <br />
-        Try any number of combinations until you craft your own hidden gem.
+        Given a collection of old film clips, it is up to you to piece them together to make your own film-noir concoction.
       </p>
-      <div className="buttons">
+      <div className="buttons about">
         <button className="button" type="button" onClick={toggleModal}>
           READ MORE
         </button>
