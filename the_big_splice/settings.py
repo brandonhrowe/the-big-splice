@@ -25,8 +25,8 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media', '_temp')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['SECRET_KEY']
-IA_USER = os.environ['IA_USER']
-IA_PASSWORD = os.environ['IA_PASSWORD']
+IA_USER = os.environ.get('IA_USER')
+IA_PASSWORD = os.environ.get('IA_PASSWORD')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -85,14 +85,22 @@ WSGI_APPLICATION = 'the_big_splice.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+DATABASE_HOST = os.environ.get('DATABASE_URL', 'localhost')
+if DATABASE_HOST != 'localhost':
+    DATABASE_HOST = DATABASE_HOST.split(":")[1][2:]
+
+DATABASE_PORT = os.environ.get('DATABASE_URL', '5432')
+if DATABASE_PORT != '5432':
+    DATABASE_PORT = DATABASE_PORT.split(":")[2].split("/")[0]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'the-big-splice',
         'USER': '',
         'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': DATABASE_HOST,
+        'PORT': DATABASE_PORT,
     }
 }
 

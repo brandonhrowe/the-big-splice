@@ -31,7 +31,6 @@ export default class Loading extends Component {
     return (
       <div className="loading-container">
         <h1 className="title-font loading">Loading...</h1>
-        <h3>This could take a minute or so. Please don't detour away!</h3>
         <div className="image-container">
           <img
             src={watch}
@@ -54,6 +53,7 @@ export default class Loading extends Component {
             alt="logo"
           /> */}
         </div>
+        <h3>This could take a minute or so. Please don't detour away!</h3>
       </div>
     );
   }

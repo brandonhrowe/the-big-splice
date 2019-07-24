@@ -10,7 +10,7 @@ body {
 }
 
 .title-font.loading {
-  margin-bottom: 0;
+  margin: 0.25em;
 }
 
 .title-font.title {
@@ -215,6 +215,7 @@ img.visible {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-bottom: 2em;
 }
 
 .buttons.about {
@@ -249,6 +250,10 @@ img.visible {
   width: 10vw;
   height: 5vh;
   font-size: 0.5em;
+}
+
+.thumbnail-description {
+  margin-top: 0;
 }
 
 @keyframes App-logo-spin {
