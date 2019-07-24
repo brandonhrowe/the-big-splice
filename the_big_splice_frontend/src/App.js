@@ -135,7 +135,7 @@ export default class App extends Component {
               className="logo small"
               alt="logo"
             />
-            <h1 className="title" onClick={this.clearAllFiles}>
+            <h1 className="title-font title" onClick={this.clearAllFiles}>
               THE BIG SPLICE
             </h1>
             <img
