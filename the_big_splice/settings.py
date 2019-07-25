@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,14 +23,14 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media', '_temp')
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
-IA_USER = os.environ.get('IA_USER')
-IA_PASSWORD = os.environ.get('IA_PASSWORD')
+SECRET_KEY = os.getenv('SECRET_KEY')
+IA_USER = os.getenv('IA_USER')
+IA_PASSWORD = os.getenv('IA_PASSWORD')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost", "brandonhrowe.pythonanywhere.com"]
 
 
 # Application definition
@@ -141,12 +140,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-STATICFILES_DIRS = [STATIC_DIR, MEDIA_DIR]
-MEDIA_ROOT = MEDIA_DIR
+# STATIC_URL = '/static/'
+# MEDIA_URL = '/media/'
+# STATICFILES_DIRS = [STATIC_DIR, MEDIA_DIR]
+# MEDIA_ROOT = MEDIA_DIR
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 CORS_ORIGIN_ALLOW_ALL = True
-
-django_heroku.settings(locals())

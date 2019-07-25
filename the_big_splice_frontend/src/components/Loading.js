@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import logo from "../BigSplice_icon.svg";
 import clock from "../Clock_TheStranger_640x480.gif";
 import sleeping from "../Sleeping_Detour_640x480.gif";
 import watch from "../Watch_KansasCityConfidential_640x480.gif";

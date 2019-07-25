@@ -1,1 +1,0 @@
-web: cd the_big_splice_frontend && npm run build && cd .. && uwsgi --ini the_big_splice_uwsgi.ini && sudo nginx

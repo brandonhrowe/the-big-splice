@@ -6,7 +6,7 @@ import Player from "./components/Player";
 import About from "./components/About";
 import Modal from "./components/Modal";
 import "./App.css";
-import logo from "./BigSplice_icon.svg";
+import logo from "./BigSplice_Icon.svg";
 import arrayMove from "array-move";
 
 export default class App extends Component {
