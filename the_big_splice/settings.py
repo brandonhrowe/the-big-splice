@@ -28,7 +28,7 @@ IA_USER = os.getenv('IA_USER')
 IA_PASSWORD = os.getenv('IA_PASSWORD')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "brandonhrowe.pythonanywhere.com"]
 
