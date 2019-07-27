@@ -145,10 +145,10 @@ class GenerateFinalFilmView(APIView):
         curr_time = int(round(time.time() * 1000))
         final_file_name = f"BigSplice_{curr_time}_{randint(0,1000000)}"
         text_file = open(os.path.join(settings.MEDIA_DIR, f'{final_file_name}_Shotlist.txt'), 'w+')
-        text_file.write(f"file {os.path.join(settings.BASE_DIR, 'media', 'BigSplice_Logo_640x480_2997.mp4')}\\n")
+        text_file.write(f"file {os.path.join(settings.BASE_DIR, 'media', 'BigSplice_Logo_640x480_2997.mp4')}\n")
         for file in request_files:
-            text_file.write(f"{os.path.join(settings.MEDIA_DIR, f'{file}.mp4')}\\n")
-        text_file.write(f"file {os.path.join(settings.BASE_DIR, 'media', 'BigSplice_End_640x480_2997.mp4')}\\n")
+            text_file.write(f"file {os.path.join(settings.MEDIA_DIR, f'{file}.mp4')}\n")
+        text_file.write(f"file {os.path.join(settings.BASE_DIR, 'media', 'BigSplice_End_640x480_2997.mp4')}\n")
         text_file.close()
         ff_merge = ffmpy.FFmpeg(
             inputs={
