@@ -1,30 +1,12 @@
 import os
-from threading import Timer
-from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework import status, generics
-from rest_framework.decorators import api_view
+from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.renderers import JSONRenderer
 from api.models import Film
 from random import randint
-import ffmpy
-import json
 import time
 from django.conf import settings
-# from api.serializer import FilmSerializer
-
-# Create your views here.
-# @api_view(["GET"])
-# def all_films(request):
-#   films = Film.objects.all().values()
-#   return Response(status=status.HTTP_200_OK, data={"data": films})
-
-# @api_view(["GET"])
-# def random(request):
-#   film = Film.random_film.get_random_film()
-#   return Response(status=status.HTTP_200_OK, data={"data": film})
-
+import subprocess
 
 class AllFilmsView(APIView):
     def get(self, request, format=None):
@@ -79,57 +61,75 @@ class GenerateRandomClipView(APIView):
 
         filmOne_fileName = f"Clip1_{filmOne['identifier']}_{''.join(str(filmOne['timecodes'][filmOne_random_idx]).split('.'))}_{''.join(str(filmOne_end_tc).split('.'))}_{randint(0, 1000000)}"
 
-        ff_filmOne = ffmpy.FFmpeg(
-            inputs={filmOne['url']:
-                    f'-ss {filmOne["timecodes"][filmOne_random_idx]} -to {filmOne_end_tc}'},
-            outputs={os.path.join(settings.MEDIA_DIR, f'{filmOne_fileName}.mp4'):
-                     "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 3M -maxrate 5M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
-        )
-        ff_filmOne.cmd
-        ff_filmOne.run()
+        # download(filmOne['identifier'], filmOne['file_name'], destdir=settings.MEDIA_DIR)
 
+        # ff_filmOne = ffmpy.FFmpeg(
+        #     inputs={os.path.join(settings.MEDIA_DIR, filmOne['identifier'], filmOne['file_name']):
+        #             f'-ss {filmOne["timecodes"][filmOne_random_idx]} -to {filmOne_end_tc}'},
+        #     outputs={os.path.join(settings.MEDIA_DIR, f'{filmOne_fileName}.mp4'):
+        #              "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 3M -maxrate 5M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
+        # )
+        # ff_filmOne = ffmpy.FFmpeg(
+        #     inputs={filmOne['url']:
+        #             f'-ss {filmOne["timecodes"][filmOne_random_idx]} -to {filmOne_end_tc}'},
+        #     outputs={os.path.join(settings.MEDIA_DIR, f'{filmOne_fileName}.mp4'):
+        #              "-threads 1 -r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 3M -maxrate 5M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
+        # )
+        # ff_filmOne.cmd
+        # ff_filmOne.run()
+        process1 = subprocess.Popen(['ffmpeg', '-ss', f'{filmOne["timecodes"][filmOne_random_idx]}', '-i', f'{filmOne["url"]}', '-t', f'{filmOne_end_tc - float(filmOne["timecodes"][filmOne_random_idx])}', '-r', '30000/1001', '-vf', 'scale=640x480,setsar=1:1', '-b:v', '3M', '-maxrate', '5M', '-bufsize', '1M', '-strict', '-2', '-c:a', 'aac', '-b:a', '128k', '-ar', '44100', os.path.join(settings.MEDIA_DIR, f'{filmOne_fileName}.mp4')])
+        process1.wait()
         filmTwo_fileName = f"Clip2_{filmTwo['identifier']}_{''.join(str(filmTwo['timecodes'][filmTwo_random_idx]).split('.'))}_{''.join(str(filmTwo_end_tc).split('.'))}_{randint(0, 1000000)}"
 
-        ff_filmTwo = ffmpy.FFmpeg(
-            inputs={filmTwo['url']:
-                    f'-ss {filmTwo["timecodes"][filmTwo_random_idx]} -to {filmTwo_end_tc}'},
-            outputs={os.path.join(settings.MEDIA_DIR, f'{filmTwo_fileName}.mp4'):
-                     "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 3M -maxrate 5M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
-        )
-        ff_filmTwo.cmd
-        ff_filmTwo.run()
+        # ff_filmTwo = ffmpy.FFmpeg(
+        #     inputs={filmTwo['url']:
+        #             f'-ss {filmTwo["timecodes"][filmTwo_random_idx]} -to {filmTwo_end_tc}'},
+        #     outputs={os.path.join(settings.MEDIA_DIR, f'{filmTwo_fileName}.mp4'):
+        #              "-threads 1 -r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 3M -maxrate 5M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
+        # )
+        # ff_filmTwo.cmd
+        # ff_filmTwo.run()
+        process2 = subprocess.Popen(['ffmpeg', '-ss', f'{filmTwo["timecodes"][filmTwo_random_idx]}', '-i', f'{filmTwo["url"]}', '-t', f'{filmTwo_end_tc - float(filmTwo["timecodes"][filmTwo_random_idx])}', '-r', '30000/1001', '-vf', 'scale=640x480,setsar=1:1', '-b:v', '3M', '-maxrate', '5M', '-bufsize', '1M', '-strict', '-2', '-c:a', 'aac', '-b:a', '128k', '-ar', '44100', os.path.join(settings.MEDIA_DIR, f'{filmTwo_fileName}.mp4')])
+        process2.wait()
 
         filmThree_fileName = f"Clip3_{filmThree['identifier']}_{''.join(str(filmThree['timecodes'][filmThree_random_idx]).split('.'))}_{''.join(str(filmThree_end_tc).split('.'))}_{randint(0, 1000000)}"
 
-        ff_filmThree = ffmpy.FFmpeg(
-            inputs={filmThree['url']:
-                    f'-ss {filmThree["timecodes"][filmThree_random_idx]} -to {filmThree_end_tc}'},
-            outputs={os.path.join(settings.MEDIA_DIR, f'{filmThree_fileName}.mp4'):
-                     "-r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 3M -maxrate 5M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
-        )
-        ff_filmThree.cmd
-        ff_filmThree.run()
+        # ff_filmThree = ffmpy.FFmpeg(
+        #     inputs={filmThree['url']:
+        #             f'-ss {filmThree["timecodes"][filmThree_random_idx]} -to {filmThree_end_tc}'},
+        #     outputs={os.path.join(settings.MEDIA_DIR, f'{filmThree_fileName}.mp4'):
+        #              "-threads 1 -r 30000/1001 -vf scale=640x480,setsar=1:1 -b:v 3M -maxrate 5M -bufsize 1M -c:a aac -b:a 128k -ar 44100"}
+        # )
+        # ff_filmThree.cmd
+        # ff_filmThree.run()
+        process3 = subprocess.Popen(['ffmpeg', '-ss', f'{filmThree["timecodes"][filmThree_random_idx]}', '-i', f'{filmThree["url"]}', '-t', f'{filmThree_end_tc - float(filmThree["timecodes"][filmThree_random_idx])}', '-r', '30000/1001', '-vf', 'scale=640x480,setsar=1:1', '-b:v', '3M', '-maxrate', '5M', '-bufsize', '1M', '-strict', '-2', '-c:a', 'aac', '-b:a', '128k', '-ar', '44100', os.path.join(settings.MEDIA_DIR, f'{filmThree_fileName}.mp4')])
+        process3.wait()
 
-        ff_thumbnailOne = ffmpy.FFmpeg(
-            inputs={os.path.join(settings.MEDIA_DIR, f'{filmOne_fileName}.mp4'): f"-ss 1"},
-            outputs={os.path.join(settings.MEDIA_DIR, f'{filmOne_fileName}_Thumbnail.jpg'): f"-vframes 1 -vf scale=256x192,setsar=1:1"}
-        )
-        ff_thumbnailOne.cmd
-        ff_thumbnailOne.run()
+        # ff_thumbnailOne = ffmpy.FFmpeg(
+        #     inputs={os.path.join(settings.MEDIA_DIR, f'{filmOne_fileName}.mp4'): f"-ss 1"},
+        #     outputs={os.path.join(settings.MEDIA_DIR, f'{filmOne_fileName}_Thumbnail.jpg'): f"-vframes 1 -vf scale=256x192,setsar=1:1"}
+        # )
+        # ff_thumbnailOne.cmd
+        # ff_thumbnailOne.run()
+        process4 = subprocess.Popen(['ffmpeg', '-ss', '1', '-i', f'{os.path.join(settings.MEDIA_DIR, f"{filmOne_fileName}.mp4")}', '-vframes', '1', '-vf', 'scale=256x192,setsar=1:1', f'{os.path.join(settings.MEDIA_DIR, f"{filmOne_fileName}_Thumbnail.jpg")}'])
+        process4.wait()
+        # ff_thumbnailTwo = ffmpy.FFmpeg(
+        #     inputs={os.path.join(settings.MEDIA_DIR, f'{filmTwo_fileName}.mp4'): f"-ss 1"},
+        #     outputs={os.path.join(settings.MEDIA_DIR, f'{filmTwo_fileName}_Thumbnail.jpg'): f"-vframes 1 -vf scale=256x192,setsar=1:1"}
+        # )
+        # ff_thumbnailTwo.cmd
+        # ff_thumbnailTwo.run()
+        process5 = subprocess.Popen(['ffmpeg', '-ss', '1', '-i', f'{os.path.join(settings.MEDIA_DIR, f"{filmTwo_fileName}.mp4")}', '-vframes', '1', '-vf', 'scale=256x192,setsar=1:1', f'{os.path.join(settings.MEDIA_DIR, f"{filmTwo_fileName}_Thumbnail.jpg")}'])
+        process5.wait()
 
-        ff_thumbnailTwo = ffmpy.FFmpeg(
-            inputs={os.path.join(settings.MEDIA_DIR, f'{filmTwo_fileName}.mp4'): f"-ss 1"},
-            outputs={os.path.join(settings.MEDIA_DIR, f'{filmTwo_fileName}_Thumbnail.jpg'): f"-vframes 1 -vf scale=256x192,setsar=1:1"}
-        )
-        ff_thumbnailTwo.cmd
-        ff_thumbnailTwo.run()
-
-        ff_thumbnailThree = ffmpy.FFmpeg(
-            inputs={os.path.join(settings.MEDIA_DIR, f'{filmThree_fileName}.mp4'): f"-ss 1"},
-            outputs={os.path.join(settings.MEDIA_DIR, f'{filmThree_fileName}_Thumbnail.jpg'): f"-vframes 1 -vf scale=256x192,setsar=1:1"}
-        )
-        ff_thumbnailThree.cmd
-        ff_thumbnailThree.run()
+        # ff_thumbnailThree = ffmpy.FFmpeg(
+        #     inputs={os.path.join(settings.MEDIA_DIR, f'{filmThree_fileName}.mp4'): f"-ss 1"},
+        #     outputs={os.path.join(settings.MEDIA_DIR, f'{filmThree_fileName}_Thumbnail.jpg'): f"-vframes 1 -vf scale=256x192,setsar=1:1"}
+        # )
+        # ff_thumbnailThree.cmd
+        # ff_thumbnailThree.run()
+        process6 = subprocess.Popen(['ffmpeg', '-ss', '1', '-i', f'{os.path.join(settings.MEDIA_DIR, f"{filmThree_fileName}.mp4")}', '-vframes', '1', '-vf', 'scale=256x192,setsar=1:1', f'{os.path.join(settings.MEDIA_DIR, f"{filmThree_fileName}_Thumbnail.jpg")}'])
+        process6.wait()
 
         # files = ["filmOne_Clip.mp4", "filmTwo_Clip.mp4", "filmThree_Clip.mp4"]
 
@@ -141,23 +141,25 @@ class GenerateRandomClipView(APIView):
 
 class GenerateFinalFilmView(APIView):
     def post(self, request, format=None):
-        request_files = json.loads(request.body)['files']
+        request_files = request.data.get('files')
         curr_time = int(round(time.time() * 1000))
         final_file_name = f"BigSplice_{curr_time}_{randint(0,1000000)}"
         text_file = open(os.path.join(settings.MEDIA_DIR, f'{final_file_name}_Shotlist.txt'), 'w+')
-        text_file.write(f"file {os.path.join(settings.BASE_DIR, 'media', 'BigSplice_Logo_640x480_2997.mp4')}\n")
+        text_file.write(f"file {os.path.join(settings.BASE_DIR, 'media', 'BigSplice_Logo_640x480_2997.mp4')}" + "\n")
         for file in request_files:
-            text_file.write(f"file {os.path.join(settings.MEDIA_DIR, f'{file}.mp4')}\n")
-        text_file.write(f"file {os.path.join(settings.BASE_DIR, 'media', 'BigSplice_End_640x480_2997.mp4')}\n")
+            text_file.write(f"file {os.path.join(settings.MEDIA_DIR, f'{file}.mp4')}" + "\n")
+        text_file.write(f"file {os.path.join(settings.BASE_DIR, 'media', 'BigSplice_End_640x480_2997.mp4')}" + "\n")
         text_file.close()
-        ff_merge = ffmpy.FFmpeg(
-            inputs={
-                os.path.join(settings.MEDIA_DIR, f'{final_file_name}_Shotlist.txt'): "-safe 0 -f concat"},
-            outputs={os.path.join(settings.MEDIA_DIR, f'{final_file_name}.mp4'): "-c copy"}
-        )
+        # ff_merge = ffmpy.FFmpeg(
+        #     inputs={
+        #         os.path.join(settings.MEDIA_DIR, f'{final_file_name}_Shotlist.txt'): "-safe 0 -f concat"},
+        #     outputs={os.path.join(settings.MEDIA_DIR, f'{final_file_name}.mp4'): "-c copy"}
+        # )
 
-        ff_merge.cmd
-        ff_merge.run()
+        # ff_merge.cmd
+        # ff_merge.run()
+        process = subprocess.Popen(['ffmpeg', '-safe', '0', '-f', 'concat', '-i', f'{os.path.join(settings.MEDIA_DIR, f"{final_file_name}_Shotlist.txt")}', '-c', 'copy', f'{os.path.join(settings.MEDIA_DIR, f"{final_file_name}.mp4")}'])
+        process.wait()
 
         # def clear_files(request_files):
         #     print("start of clear_files call")
@@ -168,14 +170,16 @@ class GenerateFinalFilmView(APIView):
 
         # timer = Timer(5.0, clear_files, [request_files])
 
+        time.sleep(5)
         # timer.start()
 
         return Response(status=status.HTTP_201_CREATED, data={"file": f"{final_file_name}"})
 
+
 class RemoveClipsView(APIView):
     def post(self, request, format=None):
         print(request)
-        clips_to_delete = json.loads(request.body)['clips']
+        clips_to_delete = request.data.get('clips')
         if len(clips_to_delete) > 0:
             for file in clips_to_delete:
                 print(f"deleting: {file}")
@@ -187,7 +191,7 @@ class RemoveClipsView(APIView):
 class RemoveMainView(APIView):
     def post(self, request, format=None):
         print(request)
-        main_to_delete = json.loads(request.body)['main']
+        main_to_delete = request.data.get('main')
         if len(main_to_delete) > 0:
             print(f"deleting: {main_to_delete}.mp4")
             os.remove(os.path.join(settings.MEDIA_DIR, f'{main_to_delete}.mp4'))
@@ -198,8 +202,8 @@ class RemoveMainView(APIView):
 class RemoveClipsAndMainView(APIView):
     def post(self, request, format=None):
         print(request)
-        clips_to_delete = json.loads(request.body)['clips']
-        main_to_delete = json.loads(request.body)['main']
+        keys = ['clips', 'main']
+        clips_to_delete, main_to_delete = [request.data.get(key) for key in keys]
         if len(clips_to_delete) > 0:
             for file in clips_to_delete:
                 print(f"deleting: {file}")
