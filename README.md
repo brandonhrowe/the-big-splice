@@ -1,5 +1,7 @@
 # The Big Splice
 
+www.thebigsplice.com
+
 The Big Splice is a site for users to piece together their own mini-movie using clips from classic film noir films.
 
 
@@ -59,8 +61,9 @@ npm run build
 
 The npm run build command will generate all of the static files - HTML, CSS, and JS - into a build/static folder, which is accessed when serving static assets.
 
-The Big Splice is currently hosted on an NGINX server with uWSGI. This is essential for properly serving out the media files. Should someone try to recreate this project, please keep this in mind as Django will not be able to properly serve static and media files on its own when not in Debug Mode.
+### NOTE
 
+Even though The Big Splice is currently hosted on an NGINX server, which is essential for properly serving out video media files, the current configuration is unfortunately only able to serve these files through uWSGI, which is unable to properly handle partial responses. Because of this, video playback is somewhat limited and navigation not supported at the moment. In the future I hope to migrate to a different host in order to let NGINX properly serve the media files.
 
 # Usage
 
@@ -149,9 +152,13 @@ Even more important, though, is that a "beforeunload" event listener is added to
 
 # Future Developments
 
+### Migrate to Different NGINX host to Support Proper Video Playback
+
+As mentioned above, even though The Big Splice is currently being served through an NGINX server, the media files are not being served directly from NGINX, causing limitations in video playback. The main change that I hope to make is to serve the site from a different server where the NGINX configuration can be modified to serve the media assets.
+
 ### Optimize for Scaling
 
-One of the primary issues that would have to be changed should this project grow in scale is managing the media assets. At the moment, the Django project itself is also responsible for running all of the FFmpeg processes as well. In an ideal setup, all video encoding would be allocated to its own server, separate from the main Django setup.
+One of the other primary issues that would have to be changed should this project grow in scale is managing the media assets. At the moment, the Django project itself is also responsible for running all of the FFmpeg processes as well. In an ideal setup, all video encoding would be allocated to its own server, separate from the main Django setup.
 
 Additionally, all of the media creation/retrieval could be handled by a service such as AWS. This could allow for more flexibility in the number of clips created, for example, as well as using higher quality material (rather than the Standard Def material from Internet Archive).
 

@@ -3,7 +3,6 @@ from django.contrib.postgres.fields import ArrayField
 from django.db.models.aggregates import Count
 from random import randint
 
-# Create your models here.
 class FilmManager(models.Manager):
   def get_random_film(self):
     count = self.aggregate(count=Count('id'))['count']

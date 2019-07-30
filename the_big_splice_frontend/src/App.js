@@ -28,13 +28,22 @@ export default class App extends Component {
     this.toggleModal = this.toggleModal.bind(this);
   }
 
+  componentDidMount() {
+    window.addEventListener("beforeunload", event => {
+      event.preventDefault();
+      event.returnValue = "Reloading this page means you will lose your movie!";
+      const { clips, main } = this.state;
+      axios.post("/api/files/remove/", { clips, main });
+    });
+  }
+
   async loadClips() {
     try {
       this.setState({
         isLoading: true
       });
       const { clips, main } = this.state;
-      await axios.post("/api/all/remove/", { clips, main });
+      await axios.post("/api/files/remove/", { clips, main });
       const { data } = await axios.post("/api/clips/", {});
       this.setState({
         clips: data.files,
@@ -64,19 +73,10 @@ export default class App extends Component {
     }
   }
 
-  componentDidMount() {
-    window.addEventListener("beforeunload", event => {
-      event.preventDefault();
-      event.returnValue = "Reloading this page means you will lose your movie!";
-      const { clips, main } = this.state;
-      axios.post("/api/all/remove/", { clips, main });
-    });
-  }
-
   async clearAllFiles() {
     try {
       const { clips, main } = this.state;
-      await axios.post("/api/all/remove/", { clips, main });
+      await axios.post("/api/files/remove/", { clips, main });
       this.setState({
         clips: [],
         main: "",
@@ -90,7 +90,7 @@ export default class App extends Component {
   async clearMainFiles() {
     try {
       const { main } = this.state;
-      await axios.post("/api/final/remove/", { main });
+      await axios.post("/api/files/remove/", { clips: [], main });
       this.setState({
         main: "",
         isPlaying: false
@@ -103,7 +103,7 @@ export default class App extends Component {
   async clearClipFiles() {
     try {
       const { clips } = this.state;
-      await axios.post("/api/clips/remove/", { clips });
+      await axios.post("/api/files/remove/", { clips, main: "" });
       this.setState({
         clips: []
       });
@@ -151,9 +151,6 @@ export default class App extends Component {
           <Player main={main} clearMainFiles={this.clearMainFiles} />
         ) : (
           <div className="about-button-container">
-            {/* <button onClick={this.loadClips}>Click for Clips</button>
-            <button onClick={this.clearClipFiles}>Clear Clips</button>
-            <button onClick={this.clearAllFiles}>Clear All Files</button> */}
             {clips.length ? (
               <div>
                 <Thumbnails
