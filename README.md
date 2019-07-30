@@ -91,7 +91,7 @@ When the user requests for their movie, they will be taken to the Loading page a
 
 ## Seed Data From Internet Archive and FFmpeg
 
-There are several steps involved with the basic functionality of the page. Before anything, it requires a database full of information from the Internet Archive and the necessary files. The seed.py file that populates the database utilizes two libraries: internetarchive and ffmpy.
+There are several steps involved with the basic functionality of the page. Before anything, it requires a database full of information from the Internet Archive and the necessary files. The seed.py file that populates the database utilizes two libraries: internetarchive and ffmpeg.
 
 ### Internet Archive
 
@@ -103,19 +103,19 @@ Finally, from the list of all files associated with each title, the script parse
 
 ### FFmpeg
 
-Once the script has a reference to the URL to the proper .mp4 file for each title, the file is run through two processes with ffmpy, a Python wrapper for FFmpeg. The first process uses FFprobe for analyzing the technical specifications of the file (resolution, frame rate, etc.). Similar to the Internet Archive data, some of this information is not necessarily used at the moment, but is preserved for potential future features.
+Once the script has a reference to the URL to the proper .mp4 file for each title, the file is run through two processes with FFmpeg. The first process uses FFprobe for analyzing the technical specifications of the file (resolution, frame rate, etc.). Similar to the Internet Archive data, some of this information is not necessarily used at the moment, but is preserved for potential future features.
 
 Next, the file is run through FFmpeg in order to analyze all of the shot changes for each film. This information is then stored as a list and saved as an array of strings in the database with the rest of the information for each title.
 
 ## Random Clip Creation
 
-When the user clicks the "Start" button, the program will initiate the clip generation process. Similarly to how the seed file is generated, both internetarchive and ffmpy are also incorporated into the processes of generating clips.
+When the user clicks the "Start" button, the program will initiate the clip generation process. Similarly to how the seed file is generated, both internetarchive and FFmpeg are also incorporated into the processes of generating clips.
 
 When the GenerateRandomClipView is called, it first calls a method on the model to pull a random title from the database table. Then, for each title, a random starting timecode is selected from the list of shot changes saved in the database. A matching end timecode is then also selected, based on a following shot change anywhere from one to three spots away (this is to assure some variety in the duration of how long each film's clip runs).
 
-Then ffmpy is called to encode the clips. The three essential variables are the URL for the source file, the start timecode, and the end timecode. Beyond that, a consistent bitrate, resolution, and framerate is applied to allow for easy compiling later on for the final film. The generated clips are stored in a temp folder accessible by the /media/ route.
+Then FFmpeg is called to encode the clips. The three essential variables are the URL for the source file, the start timecode, and the end timecode. Beyond that, a consistent bitrate, resolution, and framerate is applied to allow for easy compiling later on for the final film. The generated clips are stored in a temp folder accessible by the /media/ route.
 
-Finally, ffmpy is also used to create thumbnail images, also saved to the temp directory. The response to the request is the root names for the three clips to allow for both accessing the correct clips/thumbnails on the frontend as well as deleting the correct files later on.
+Finally, FFmpeg is also used to create thumbnail images, also saved to the temp directory. The response to the request is the root names for the three clips to allow for both accessing the correct clips/thumbnails on the frontend as well as deleting the correct files later on.
 
 ## Rearranging Clips
 
@@ -135,7 +135,7 @@ Once the user has settled on an order for the clips, they can generate the final
 
 ### FFmpeg
 
-The process for generating the final film, as with the clips, utilizes FFmpeg. In order to concatenate the three clips (as well as the intro and outro logos), a .txt file is generated with file paths to all the files. ffmpy then references that .txt file to generate a new .mp4 video file for the viewer.
+The process for generating the final film, as with the clips, utilizes FFmpeg. In order to concatenate the three clips (as well as the intro and outro logos), a .txt file is generated with file paths to all the files. FFmpeg then references that .txt file to generate a new .mp4 video file for the viewer.
 
 ### Video.JS
 

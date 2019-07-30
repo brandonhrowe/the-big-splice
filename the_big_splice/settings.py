@@ -30,7 +30,7 @@ IA_PASSWORD = os.getenv('IA_PASSWORD')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["localhost", "brandonhrowe.pythonanywhere.com"]
+ALLOWED_HOSTS = ["www.thebigsplice.com", "thebigsplice.com", "localhost", "brandonhrowe.pythonanywhere.com"]
 
 
 # Application definition
