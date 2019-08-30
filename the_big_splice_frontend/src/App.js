@@ -5,6 +5,7 @@ import Thumbnails from "./components/Thumbnails";
 import Player from "./components/Player";
 import About from "./components/About";
 import Modal from "./components/Modal";
+import Error from "./components/Error";
 import "./App.css";
 import logo from "./BigSplice_Icon.svg";
 import arrayMove from "array-move";
@@ -17,7 +18,8 @@ export default class App extends Component {
       main: "",
       isLoading: false,
       isPlaying: false,
-      displayModal: false
+      displayModal: false,
+      isError: false
     };
     this.loadClips = this.loadClips.bind(this);
     this.clearAllFiles = this.clearAllFiles.bind(this);
@@ -51,6 +53,10 @@ export default class App extends Component {
       });
     } catch (error) {
       console.log(error);
+      this.setState({
+        isError: true,
+        isLoading: false
+      });
     }
   }
 
@@ -70,6 +76,10 @@ export default class App extends Component {
       }, 2000);
     } catch (error) {
       console.log(error);
+      this.setState({
+        isError: true,
+        isLoading: false
+      });
     }
   }
 
@@ -125,27 +135,28 @@ export default class App extends Component {
   }
 
   render() {
-    const { clips, main, isLoading, isPlaying, displayModal } = this.state;
+    const {
+      clips,
+      main,
+      isLoading,
+      isPlaying,
+      isError,
+      displayModal
+    } = this.state;
     return (
       <div className={`App-header ${isPlaying && "playing"}`}>
-        {!isPlaying && !isLoading ? (
+        {!isError && !isPlaying && !isLoading ? (
           <div className="title-container">
-            <img
-              src={logo}
-              className="logo small"
-              alt="logo"
-            />
+            <img src={logo} className="logo small" alt="logo" />
             <h1 className="title-font title" onClick={this.clearAllFiles}>
               THE BIG SPLICE
             </h1>
-            <img
-              src={logo}
-              className="logo small"
-              alt="logo"
-            />
+            <img src={logo} className="logo small" alt="logo" />
           </div>
         ) : null}
-        {isLoading ? (
+        {isError ? (
+          <Error />
+        ) : isLoading ? (
           <Loading />
         ) : isPlaying && main ? (
           <Player main={main} clearMainFiles={this.clearMainFiles} />
