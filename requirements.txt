@@ -6,7 +6,7 @@ clint==0.5.1
 contextlib2==0.5.5
 dj-database-url==0.5.0
 dj-static==0.0.6
-Django==2.2.1
+Django==2.2.8
 django-cors-headers==3.0.2
 django-heroku==0.3.1
 django-rest-framework==0.1.0
