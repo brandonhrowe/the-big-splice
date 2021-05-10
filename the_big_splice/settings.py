@@ -28,7 +28,7 @@ IA_USER = os.getenv('IA_USER')
 IA_PASSWORD = os.getenv('IA_PASSWORD')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["www.thebigsplice.com", "thebigsplice.com", "localhost", "brandonhrowe.pythonanywhere.com"]
 
@@ -139,11 +139,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-# STATIC_URL = '/static/'
-# MEDIA_URL = '/media/'
-# STATICFILES_DIRS = [STATIC_DIR, MEDIA_DIR]
-# MEDIA_ROOT = MEDIA_DIR
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# @todo when not running locally, comment out all static and media variables below
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+STATICFILES_DIRS = [STATIC_DIR]
+MEDIA_ROOT = MEDIA_DIR
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 CORS_ORIGIN_ALLOW_ALL = True

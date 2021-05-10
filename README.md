@@ -65,6 +65,31 @@ The npm run build command will generate all of the static files - HTML, CSS, and
 
 Even though The Big Splice is currently hosted on an NGINX server, which is essential for properly serving out video media files, the current configuration is unfortunately only able to serve these files through uWSGI, which is unable to properly handle partial responses. Because of this, video playback is somewhat limited and navigation not supported at the moment. In the future I hope to migrate to a different host in order to let NGINX properly serve the media files.
 
+# Running Locally
+
+1. If you are using a conda environment, run that using:
+
+```bash
+source activate the-big-splice
+```
+
+Make sure the frontend is build:
+
+```bash
+cd the_big_splice_frontend
+npm i
+npm run build
+cd ..
+```
+
+Finally, run Django:
+
+```bash
+python manage.py runserver
+```
+
+By default, you should be able to see the app on localhost:8000
+
 # Usage
 
 ### Start
