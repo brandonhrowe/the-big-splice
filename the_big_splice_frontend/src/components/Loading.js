@@ -1,60 +1,59 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import clock from "../Clock_TheStranger_640x480.gif";
 import sleeping from "../Sleeping_Detour_640x480.gif";
 import watch from "../Watch_KansasCityConfidential_640x480.gif";
 import strings from "../strings";
 
-export default class Loading extends Component {
-  constructor() {
-    super();
-    this.state = {
-      displayGif: 1
-    };
-  }
+const GIF_CHANGE_INTERVAL = 15000;
 
-  componentDidMount() {
-    setInterval(() => {
-      let newGif;
-      if (this.state.displayGif === 3) {
-        newGif = 1;
+const GIFS = [
+  {
+    src: watch,
+    alt: "Kansas City Confidential Watch",
+  },
+  {
+    src: clock,
+    alt: "The Stranger Clock",
+  },
+  {
+    src: sleeping,
+    alt: "Detour Sleeping",
+  },
+];
+
+const Loading = () => {
+  const [displayGif, setDisplayGif] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (displayGif >= GIFS.length - 1) {
+        setDisplayGif(0);
       } else {
-        newGif = this.state.displayGif + 1;
+        setDisplayGif(displayGif + 1);
       }
-      this.setState({
-        displayGif: newGif
-      });
-    }, 15000);
-  }
+    }, GIF_CHANGE_INTERVAL);
 
-  render() {
-    const { displayGif } = this.state;
-    return (
-      <div className="loading-container">
-        <h1 className="title-font loading">Loading...</h1>
-        <div className="image-container">
+    return () => {
+      clearInterval(interval);
+    };
+  }, [displayGif]);
+
+  return (
+    <div className="loading-container">
+      <h1 className="title-font loading">{strings.LOADING_TITLE()}</h1>
+      <div className="image-container">
+        {/* Separate images are needed to see fade between gifs */}
+        {GIFS.map((gif, idx) => (
           <img
-            src={watch}
-            className={`${displayGif === 1 && "visible"} gif`}
-            alt="Kansas City Confidential Watch"
+            src={gif.src}
+            alt={gif.alt}
+            className={`${displayGif === idx && "visible"} gif`}
           />
-          <img
-            src={clock}
-            className={`${displayGif === 2 && "visible"} gif`}
-            alt="The Stranger Clock"
-          />
-          <img
-            src={sleeping}
-            className={`${displayGif === 3 && "visible"} gif`}
-            alt="Detour Sleeping"
-          />
-          {/* <img
-            src={logo}
-            className={`${!displayGif && "visible"} logo bottom`}
-            alt="logo"
-          /> */}
-        </div>
-        <h3>{strings.LOADING()}</h3>
+        ))}
       </div>
-    );
-  }
-}
+      <h3>{strings.LOADING_DESCRIPTION()}</h3>
+    </div>
+  );
+};
+
+export default Loading;
