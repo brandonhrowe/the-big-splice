@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import clock from "../Clock_TheStranger_640x480.gif";
 import sleeping from "../Sleeping_Detour_640x480.gif";
 import watch from "../Watch_KansasCityConfidential_640x480.gif";
+import strings from "../strings";
 
 export default class Loading extends Component {
   constructor() {
@@ -52,7 +53,7 @@ export default class Loading extends Component {
             alt="logo"
           /> */}
         </div>
-        <h3>This could take a minute or so. Please don't detour away!</h3>
+        <h3>{strings.LOADING()}</h3>
       </div>
     );
   }

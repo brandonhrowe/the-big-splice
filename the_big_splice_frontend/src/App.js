@@ -9,6 +9,7 @@ import Error from "./components/Error";
 import "./App.css";
 import logo from "./BigSplice_Icon.svg";
 import arrayMove from "array-move";
+import strings from "./strings";
 
 export default class App extends Component {
   constructor(props) {
@@ -149,7 +150,7 @@ export default class App extends Component {
           <div className="title-container">
             <img src={logo} className="logo small" alt="logo" />
             <h1 className="title-font title" onClick={this.clearAllFiles}>
-              THE BIG SPLICE
+              {strings.TITLE()}
             </h1>
             <img src={logo} className="logo small" alt="logo" />
           </div>

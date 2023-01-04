@@ -1,5 +1,6 @@
 import React from "react";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
+import strings from "../strings";
 
 const ThumbnailItem = SortableElement(({ clip }) => (
   <div className="thumbnail-wraper">
@@ -15,7 +16,7 @@ const Thumbnails = props => {
   const { clips, onSortEnd, createMainFile, loadClips, clearAllFiles } = props;
   return (
     <div className="thumbnail-component">
-      <h3 className="thumbnail-description">Drag and drop the below images to edit your movie together</h3>
+      <h3 className="thumbnail-description">{strings.THUMBNAIL_DESCRIPTION()}</h3>
       <div className="thumbnail-film-strip outer">
         <div className="thumbnail-film-strip middle">
           <div className="thumbnail-film-strip inner">
@@ -30,13 +31,13 @@ const Thumbnails = props => {
       <br />
       <div className="buttons">
         <button className="button" onClick={createMainFile}>
-          CREATE YOUR MOVIE
+          {strings.CREATE_YOUR_MOVIE()}
         </button>
         <button className="button" onClick={loadClips}>
-          GET NEW CLIPS
+          {strings.GET_NEW_CLIPS()}
         </button>
         <button className="button" onClick={clearAllFiles}>
-          HOME
+          {strings.HOME()}
         </button>
       </div>
     </div>

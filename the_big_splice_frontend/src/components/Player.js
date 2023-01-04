@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import videojs from "video.js";
 import "../video-js.min.css";
+import strings from "../strings";
 
 export default class Player extends Component {
   componentDidMount() {
@@ -27,7 +28,7 @@ export default class Player extends Component {
           </div>
         <br />
         <button className="button player-button" onClick={clearMainFiles}>
-          MAKE A NEW MOVIE
+          {strings.MAKE_A_NEW_MOVIE()}
         </button>
       </div>
     );

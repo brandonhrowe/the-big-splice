@@ -1,18 +1,19 @@
 import React from "react";
+import strings from "../strings";
 
 const About = props => {
   const { toggleModal, loadClips } = props;
   return (
     <div className="about-container">
       <p>
-        Given a collection of old film clips, it is up to you to piece them together to make your own film-noir concoction.
+        {strings.ABOUT_DESCRIPTION()}
       </p>
       <div className="buttons about">
         <button className="button" type="button" onClick={toggleModal}>
-          READ MORE
+          {strings.READ_MORE()}
         </button>
         <button className="button" type="button" onClick={loadClips}>
-          START
+          {strings.START()}
         </button>
       </div>
     </div>
